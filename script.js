@@ -76,7 +76,46 @@ function createLinkedList() {
   }
 
   function toString() {
-    console.log(JSON.stringify(head));
+    return JSON.stringify(head);
+  }
+
+  function insertAt(value, index) {
+    if (index >= size || index < 0) return;
+
+    let newNode = createNode();
+    newNode.value = value;
+    if (index === 0) {
+      newNode.nextNode = head;
+      head = newNode;
+    } else if (index === size - 1) {
+      tail.nextNode = newNode;
+      tail = newNode;
+    } else {
+      let previous = at(index - 1);
+      let next = at(index);
+
+      previous.nextNode = newNode;
+      newNode.nextNode = next;
+    }
+    size += 1;
+  }
+
+  function removeAt(index) {
+    if (index >= size || index < 0) return;
+    if (index === 0) {
+      let tmp = head.nextNode;
+      head = tmp;
+    } else if (index === size - 1) {
+      let lastButOne = at(size - 2);
+      lastButOne.nextNode = null;
+      tail = lastButOne;
+    } else {
+      let previous = at(index - 1);
+      let next = at(index + 1);
+
+      previous.nextNode = next;
+    }
+    size -= 1;
   }
 
   return {
@@ -96,18 +135,7 @@ function createLinkedList() {
     contains,
     find,
     toString,
+    insertAt,
+    removeAt,
   };
 }
-
-let linked = createLinkedList();
-
-linked.append(3);
-linked.append(4);
-linked.append(5);
-linked.append("dupa");
-linked.append(3);
-linked.append(4);
-linked.append(5);
-linked.append("dupa");
-
-linked.toString();
